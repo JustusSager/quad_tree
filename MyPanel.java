@@ -1,9 +1,7 @@
 import javax.swing.*;
-
 import java.awt.*;
-import java.awt.event.*;
 
-public class MyPanel extends JPanel implements ActionListener{
+public class MyPanel extends JPanel {
 
     final int PANEL_WIDTH = 600;
     final int PANEL_HEIGHT = 600;
@@ -52,32 +50,5 @@ public class MyPanel extends JPanel implements ActionListener{
             this.draw_quadtree(g2d, quadtree.south_east);
             this.draw_quadtree(g2d, quadtree.south_west);
         }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        // for (Boid boid : boids) {
-        //     boid.flock(boids);
-        //     // System.out.println(boid);
-        // }
-
-        // for (Boid boid : boids) {
-        //     boid.update();
-    
-        //     if (boid.position.x < 0) {
-        //         boid.position.x = PANEL_WIDTH;
-        //     } else if (boid.position.x > PANEL_WIDTH) {
-        //         boid.position.x = 0;
-        //     }
-        //     if (boid.position.y < 0) {
-        //         boid.position.y = PANEL_HEIGHT;
-        //     } else if (boid.position.y > PANEL_HEIGHT) {
-        //         boid.position.y = 0;
-        //     }
-        // }
-
-        
-        repaint();
     }
 }
