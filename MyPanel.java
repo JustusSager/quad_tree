@@ -19,6 +19,7 @@ public class MyPanel extends JPanel {
         for (int i = 0; i < points.length; i++) {
             points[i] = new Point(Math.random() * PANEL_WIDTH, Math.random() * PANEL_HEIGHT, points[i]);
         }
+        
         /* QuadTree erstellen und Punkte einfügen */
         quadtree = new QuadTree(0, 0, PANEL_WIDTH, PANEL_HEIGHT, 4);
         for(Point point : points) {
