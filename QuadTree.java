@@ -14,6 +14,7 @@ public class QuadTree {
     }
 
     void insert(Point point) {
+        /* Punkt in den QuadTree eingefügen */
         if (this.boundary.intersects(point) && point != null) {
             if (this.points_length < this.max_points) {
                 points[points_length] = point;
@@ -31,11 +32,13 @@ public class QuadTree {
         }
     }
     void insert(double x, double y, Object user_data) {
+        /* Koordinaten zu Punkt umwandeln und in den QuadTree eingefügen */
         Point point = new Point(x, y, user_data);
         this.insert(point);
     }
     
     void devide() {
+        /* QuadTree in vier untergeordnete QuadTrees aufteilen und die Punkte passend in sie einfügen */
         this.north_west = new QuadTree(this.boundary.x, this.boundary.y, this.boundary.width / 2, this.boundary.height / 2, this.max_points);
         this.north_east = new QuadTree(this.boundary.x + this.boundary.width / 2, this.boundary.y, this.boundary.width / 2, this.boundary.height / 2, this.max_points);
         this.south_west = new QuadTree(this.boundary.x, this.boundary.y + this.boundary.height / 2, this.boundary.width / 2, this.boundary.height / 2, this.max_points);
@@ -53,6 +56,7 @@ public class QuadTree {
 }
 
 class Point {
+    /* Verwendete Punktklasse */
     double x, y;
     Object user_data;
 
@@ -70,6 +74,7 @@ class Point {
 }
 
 class Rectangle {
+    /* Verwendete Recheckklasse */
     double x, y, width, height;
 
     Rectangle(double x, double y, double width, double height) {
@@ -80,6 +85,7 @@ class Rectangle {
     }
 
     boolean intersects(Point point) {
+        /* Kontrolle ob ein Punkt innerhalb des Rechtecks liegt */
         return (
             point.x <= this.x + this.width &&
             point.x >= this.x &&
@@ -88,6 +94,7 @@ class Rectangle {
         );
     }
     boolean intersects(Rectangle rect) {
+        /* Kontrolle sich ein Rechteck mit diesem Rechteck schneidet */
         return !(
             rect.x >= this.x + this.width ||
             rect.x + rect.width <= this.x ||
