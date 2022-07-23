@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class QuadTree {
     Rectangle boundary;
     int max_points, points_length;
@@ -15,7 +17,7 @@ public class QuadTree {
 
     void insert(Point point) {
         /* Punkt in den QuadTree eingefügen */
-        if (this.boundary.intersects(point) && point != null) {
+        if (this.boundary.contains(point) && point != null) {
             if (this.points_length < this.max_points) {
                 points[points_length] = point;
                 points_length++;
@@ -53,6 +55,30 @@ public class QuadTree {
             }
         }
     }
+
+    ArrayList<Point> querry(Rectangle rect, ArrayList<Point> result) {
+        /* Liefert alle Punkte innerhalb des angegebenen Rechtecks. */
+        if (!boundary.intersects(rect)) {
+            return result;
+        }else if(devided) {
+            this.north_east.querry(rect, result);
+            this.north_west.querry(rect, result);
+            this.south_east.querry(rect, result);
+            this.south_west.querry(rect, result);
+        } else {
+            for (Point point : points) {
+                if (point != null && rect.contains(point)) {
+                    result.add(point);
+                }
+            }
+        }
+        return result;
+    }
+    ArrayList<Point> querry(double x, double y, double width, double height) {
+        /* Liefert alle Punkte innerhalb des angegebenen Rechtecks. */
+        ArrayList<Point> result = new ArrayList<Point>();
+        return this.querry(new Rectangle(x, y, width, height), result);
+    }
 }
 
 class Point {
@@ -84,7 +110,7 @@ class Rectangle {
         this.height = height;
     }
 
-    boolean intersects(Point point) {
+    boolean contains(Point point) {
         /* Kontrolle ob ein Punkt innerhalb des Rechtecks liegt */
         return (
             point.x <= this.x + this.width &&
@@ -93,13 +119,14 @@ class Rectangle {
             point.y >= this.y
         );
     }
+
     boolean intersects(Rectangle rect) {
         /* Kontrolle sich ein Rechteck mit diesem Rechteck schneidet */
-        return !(
-            rect.x >= this.x + this.width ||
-            rect.x + rect.width <= this.x ||
-            rect.y >= this.y + this.height ||
-            rect.y + rect.height <= this.y
+        return (
+            !(rect.x >= this.x + this.width) &&
+            !(rect.x + rect.width <= this.x) &&
+            !(rect.y >= this.y + this.height) &&
+            !(rect.y + rect.height <= this.y)
         );
     }
 }

@@ -1,10 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MyPanel extends JPanel {
 
     final int PANEL_WIDTH = 600;
     final int PANEL_HEIGHT = 600;
+    final int querry_width = 150;
+    final int querry_heigth = 150;
+    final int querry_x = (int) (Math.random() * (PANEL_WIDTH - querry_width));
+    final int querry_y = (int) (Math.random() * (PANEL_WIDTH - querry_heigth));
+    ArrayList<Point> querry_result;
     
     QuadTree quadtree;
     Point[] points;
@@ -19,12 +25,14 @@ public class MyPanel extends JPanel {
         for (int i = 0; i < points.length; i++) {
             points[i] = new Point(Math.random() * PANEL_WIDTH, Math.random() * PANEL_HEIGHT, points[i]);
         }
-        
+
         /* QuadTree erstellen und Punkte einfügen */
         quadtree = new QuadTree(0, 0, PANEL_WIDTH, PANEL_HEIGHT, 4);
         for(Point point : points) {
             quadtree.insert(point);
         }
+
+        querry_result = quadtree.querry(querry_x, querry_y, querry_width, querry_heigth);
     }
 
     public void paint(Graphics g) {
@@ -41,11 +49,13 @@ public class MyPanel extends JPanel {
 
         /* Rechteck, dessen enthaltene Punkte gefunden werden sollen, zeichnen */
         g2d.setColor(Color.BLUE);
-        int x = (int) (Math.random() * (PANEL_WIDTH - 150));
-        int y = (int) (Math.random() * (PANEL_WIDTH - 150));
-        int width = 150;
-        int heigth = 150;
-        g2d.drawRect(x, y, width, heigth);
+        g2d.drawRect(querry_x, querry_y, querry_width, querry_heigth);
+
+        /* Querryergebnis zeichnen */
+        g2d.setColor(Color.RED);
+        for (Point point : querry_result) {
+            g2d.fillOval((int) point.x - 3, (int) point.y - 3, 6, 6);
+        }
     }
 
     void draw_quadtree(Graphics2D g2d, QuadTree quadtree) {
